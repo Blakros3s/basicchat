@@ -15,7 +15,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Expose container port (matches docker-compose)
-EXPOSE 8000
+EXPOSE 9000
 
 # Start Daphne (production-ready)
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "chatapp.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "9000", "chatapp.asgi:application"]
