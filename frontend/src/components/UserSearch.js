@@ -13,7 +13,8 @@ const UserSearch = ({ currentUsername, onSelectUser, onBack }) => {
 
     const fetchAllUsers = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/users/');
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/api/users/`);
             const data = await response.json();
             // Filter out current user
             const filteredUsers = data.filter(user => user.username !== currentUsername);
@@ -34,7 +35,8 @@ const UserSearch = ({ currentUsername, onSelectUser, onBack }) => {
 
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/users/search/?q=${encodeURIComponent(query)}`);
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/api/users/search/?q=${encodeURIComponent(query)}`);
             const data = await response.json();
             // Filter out current user
             const filteredUsers = data.users.filter(user => user.username !== currentUsername);
