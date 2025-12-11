@@ -18,22 +18,26 @@ services:
     restart: always
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: chatapp_backend_prod
-    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && daphne -b 0.0.0.0 -p 8000 chatapp.asgi:application"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             daphne -b 0.0.0.0 -p 8000 chatapp.asgi:application"
     volumes:
       - static_volume:/app/staticfiles
     depends_on:
       - db
       - redis
     environment:
-      - DEBUG=False
-      - SECRET_KEY=${SECRET_KEY:-change_this_in_production_please}
-      - ALLOWED_HOSTS=tilakapi.enlightbook.com
-      - CORS_ALLOWED_ORIGINS=http://tilak.enlightbook.com,https://tilak.enlightbook.com
-      - CSRF_TRUSTED_ORIGINS=http://tilak.enlightbook.com,https://tilak.enlightbook.com
-      - DATABASE_URL=postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
-      - REDIS_HOST=redis
+      DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:-change_this_in_production_please}
+      ALLOWED_HOSTS: tilakapi.enlightbook.com
+      CORS_ALLOWED_ORIGINS: http://tilak.enlightbook.com,https://tilak.enlightbook.com
+      CSRF_TRUSTED_ORIGINS: http://tilak.enlightbook.com,https://tilak.enlightbook.com
+      DATABASE_URL: postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
+      REDIS_HOST: redis
     restart: always
 
   frontend:
@@ -41,8 +45,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        - REACT_APP_API_URL=${REACT_APP_API_URL}
-        - REACT_APP_WS_URL=${REACT_APP_WS_URL}
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://tilakapi.enlightbook.com}
+        REACT_APP_WS_URL: ${REACT_APP_WS_URL:-ws://tilakapi.enlightbook.com}
     container_name: chatapp_frontend_prod
     restart: always
 
