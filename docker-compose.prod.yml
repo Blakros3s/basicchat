@@ -38,6 +38,8 @@ services:
       CSRF_TRUSTED_ORIGINS: http://tilak.enlightbook.com,https://tilak.enlightbook.com
       DATABASE_URL: postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
       REDIS_HOST: redis
+    ports:
+      - "8000:8000"  # expose backend to host
     restart: always
 
   frontend:
@@ -48,20 +50,23 @@ services:
         REACT_APP_API_URL: ${REACT_APP_API_URL:-http://tilakapi.enlightbook.com}
         REACT_APP_WS_URL: ${REACT_APP_WS_URL:-ws://tilakapi.enlightbook.com}
     container_name: chatapp_frontend_prod
+    ports:
+      - "8080:80"  # expose frontend to host port 8080
     restart: always
 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: chatapp_nginx_prod
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/app/staticfiles:ro
-    depends_on:
-      - backend
-      - frontend
-    restart: always
+# Remove Docker Nginx container; host Nginx handles routing
+# nginx:
+#   image: nginx:stable-alpine
+#   container_name: chatapp_nginx_prod
+#   ports:
+#     - "80:80"
+#   volumes:
+#     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+#     - static_volume:/app/staticfiles:ro
+#   depends_on:
+#     - backend
+#     - frontend
+#   restart: always
 
 volumes:
   postgres_data:
