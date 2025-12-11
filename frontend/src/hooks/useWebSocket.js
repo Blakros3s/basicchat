@@ -16,9 +16,11 @@ export const useWebSocket = (roomName, username, chatType = 'group') => {
     if (!roomName || !username) return;
 
     // WebSocket URL based on chat type
+    // WebSocket URL based on chat type
+    const wsBaseUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8000';
     const wsUrl = chatType === 'group'
-      ? `ws://localhost:8000/ws/group/${roomName}/?user=${username}`
-      : `ws://localhost:8000/ws/dm/${roomName}/?user=${username}`;
+      ? `${wsBaseUrl}/ws/group/${roomName}/?user=${username}`
+      : `${wsBaseUrl}/ws/dm/${roomName}/?user=${username}`;
 
     console.log(`Connecting to WebSocket (${chatType}): ${wsUrl}`);
 

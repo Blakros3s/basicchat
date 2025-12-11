@@ -14,7 +14,8 @@ const GroupBrowser = ({ username, onJoinRoom, onBack }) => {
 
     const fetchRooms = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/rooms/');
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/api/rooms/`);
             const data = await response.json();
             setRooms(data);
             setLoading(false);
@@ -29,7 +30,8 @@ const GroupBrowser = ({ username, onJoinRoom, onBack }) => {
         if (!newRoomName.trim()) return;
 
         try {
-            const response = await fetch('http://localhost:8000/api/rooms/create_or_get/', {
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${apiUrl}/api/rooms/create_or_get/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
