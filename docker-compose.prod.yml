@@ -22,6 +22,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.prod
     container_name: chatapp_backend_prod
     command: >
       sh -c "python manage.py migrate &&
@@ -41,7 +42,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
       REDIS_HOST: redis
     ports:
-      - "9000:8000"  # backend exposed to host port 9000
+      - "9000:8000" # backend exposed to host port 9000
     restart: always
 
   frontend:
@@ -53,7 +54,7 @@ services:
         REACT_APP_WS_URL: ${REACT_APP_WS_URL:-ws://tilakapi.enlightbook.com}
     container_name: chatapp_frontend_prod
     ports:
-      - "9090:80"  # frontend exposed to host port 9090
+      - "9090:80" # frontend exposed to host port 9090
     restart: always
 
 volumes:
