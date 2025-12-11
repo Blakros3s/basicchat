@@ -4,6 +4,8 @@ services:
   db:
     image: postgres:15-alpine
     container_name: chatapp_db_prod
+    ports:
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
