@@ -39,7 +39,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
       REDIS_HOST: redis
     ports:
-      - "8001:8000"  # expose backend to host
+      - "9000:8000"  # expose backend to host
     restart: always
 
   frontend:
@@ -51,7 +51,7 @@ services:
         REACT_APP_WS_URL: ${REACT_APP_WS_URL:-ws://tilakapi.enlightbook.com}
     container_name: chatapp_frontend_prod
     ports:
-      - "8080:80"  # expose frontend to host port 8080
+      - "9090:80"  # expose frontend to host port 8080
     restart: always
 
 # Remove Docker Nginx container; host Nginx handles routing
