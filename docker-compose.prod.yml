@@ -39,7 +39,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-chatuser}:${POSTGRES_PASSWORD:-chatpass123}@db:5432/${POSTGRES_DB:-chatdb}
       REDIS_HOST: redis
     ports:
-      - "8000:8000"  # expose backend to host
+      - "8001:8000"  # expose backend to host
     restart: always
 
   frontend:
